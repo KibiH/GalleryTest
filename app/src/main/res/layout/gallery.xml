@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#333">
+
+    <FrameLayout
+        android:id="@+id/frame_layout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <FrameLayout
+            android:id="@+id/frame_layout2"
+            android:layout_gravity="top"
+            android:layout_height="50dp"
+            android:layout_width="fill_parent">
+
+            <TextView
+                android:id="@+id/tv_gallery_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
+                android:textColor="#888"
+                android:text="@string/photo_gallery"/>
+
+        </FrameLayout>
+
+        <GridView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:columnWidth="150dp"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="50dp"/>
+
+    </FrameLayout>
+
+</LinearLayout>

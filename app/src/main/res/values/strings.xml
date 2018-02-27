@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GalleryTest</string>
+    <string name="please_wait">Please wait while we load the pictures...</string>
+    <string name="photo_gallery">Photo Gallery</string>
+    <string name="permissions_message">In order to work properly, this application requires permission to read your gallery, please accept the next dialog</string>
+    <string name="ok">OK</string>
+    <string name="permission_fail">The app was not allowed to read your storage. Hence, it cannot function properly. Please consider granting it this permission</string>
+</resources>
