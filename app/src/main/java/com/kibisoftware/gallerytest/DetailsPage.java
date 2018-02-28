@@ -33,8 +33,8 @@ public class DetailsPage extends AppCompatActivity {
         position = getIntent().getIntExtra("position", 0);
         picposition = getIntent().getIntExtra("picposition", 0);
 
-        ivPicture = (ImageView) findViewById(R.id.iv_picture);
-        lvDetails = (ListView) findViewById(R.id.lv_details);
+        ivPicture = findViewById(R.id.iv_picture);
+        lvDetails = findViewById(R.id.lv_details);
 
         ArrayList<ImageFolder> folders = GalleryPage.imageFolders;
         String path = "file://" + folders.get(position).getimageUrls().get(picposition);
@@ -84,19 +84,59 @@ public class DetailsPage extends AppCompatActivity {
         }
         detailsList.add(item);
 
-        String latitude = exifInfo.getAttribute(ExifInterface.TAG_GPS_DEST_LATITUDE);
+        String latitude = exifInfo.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
         if (latitude != null && latitude.length() > 0) {
-            item = new DetailsListItem("Latitude", latitude);
+            String latitudeStrs[] = latitude.split(",");
+            // should now hve 3 strings in format num/denom
+            double degreesTotal = 0;
+            double divideFactor = 1;
+            for (String latitudeStr : latitudeStrs) {
+                String numDenom[] = latitudeStr.split("/");
+                double numerator = Double.parseDouble(numDenom[0]);
+                double denominator = Double.parseDouble(numDenom[1]);
+                double degrees = numerator / (denominator * divideFactor);
+                degreesTotal += degrees;
+                divideFactor = divideFactor * 60;
+            }
+            String latitudeRef = exifInfo.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
+            if (latitudeRef != null && latitudeRef.length() > 0) {
+                if (!latitudeRef.equals("N")) {
+                    degreesTotal = degreesTotal * (-1);
+                }
+                item = new DetailsListItem("Latitude", "" + degreesTotal);
+            } else {
+                item = new DetailsListItem("Latitude", "Unknown");
+            }
         } else {
             item = new DetailsListItem("Latitude", "Unknown");
         }
         detailsList.add(item);
 
-        String longitude = exifInfo.getAttribute(ExifInterface.TAG_GPS_DEST_LONGITUDE);
+        String longitude = exifInfo.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         if (longitude != null && longitude.length() > 0) {
-            item = new DetailsListItem("Longitude", longitude);
+            String longitudeStrs[] = longitude.split(",");
+            // should now hve 3 strings in format num/denom
+            double degreesTotal = 0;
+            double divideFactor = 1;
+            for (String longitudeStr : longitudeStrs) {
+                String numDenom[] = longitudeStr.split("/");
+                double numerator = Double.parseDouble(numDenom[0]);
+                double denominator = Double.parseDouble(numDenom[1]);
+                double degrees = numerator / (denominator * divideFactor);
+                degreesTotal += degrees;
+                divideFactor = divideFactor * 60;
+            }
+            String longitudeRef = exifInfo.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
+            if (longitudeRef != null && longitudeRef.length() > 0) {
+                if (!longitudeRef.equals("E")) {
+                    degreesTotal = degreesTotal * (-1);
+                }
+                item = new DetailsListItem("Latitude", "" + degreesTotal);
+            } else {
+                item = new DetailsListItem("Latitude", "Unknown");
+            }
         } else {
-            item = new DetailsListItem("Longitude", "Unknown");
+            item = new DetailsListItem("Latitude", "Unknown");
         }
         detailsList.add(item);
 
@@ -109,11 +149,25 @@ public class DetailsPage extends AppCompatActivity {
         }
         detailsList.add(item);
 
-        String location = exifInfo.getAttribute(ExifInterface.TAG_SUBJECT_LOCATION);
-        if (location != null && location.length() > 0) {
-            item = new DetailsListItem("Location", location);
+        String altitude = exifInfo.getAttribute(ExifInterface.TAG_GPS_ALTITUDE);
+        if (altitude != null && altitude.length() > 0) {
+            String numDenom[] = altitude.split("/");
+            double numerator = Double.parseDouble(numDenom[0]);
+            double denominator = Double.parseDouble(numDenom[1]);
+            double altitudeMeters = numerator / denominator;
+
+            String altitudeRef = exifInfo.getAttribute(ExifInterface.TAG_GPS_ALTITUDE_REF);
+            if (altitudeRef != null && altitudeRef.length() > 0) {
+                if (altitudeRef.equals("1")) {
+                    altitudeMeters = altitudeMeters * (-1);
+                }
+                item = new DetailsListItem("Altitude", "" + altitudeMeters + " m");
+            } else {
+                item = new DetailsListItem("Altitude", "Unknown");
+            }
+
         } else {
-            item = new DetailsListItem("Location", "Unknown");
+            item = new DetailsListItem("Altitude", "Unknown");
         }
         detailsList.add(item);
 
